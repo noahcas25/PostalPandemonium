@@ -10,8 +10,6 @@ public class MailShoot : MonoBehaviour
 
     private void Update() => Shoot();
 
-
-
     private void Shoot() {
         if(!_canShoot) return;
 
@@ -20,7 +18,7 @@ public class MailShoot : MonoBehaviour
         package.transform.position = _box.transform.position;
         package.SetActive(true);
         package.transform.Rotate(Random.Range(0, 100), Random.Range(0, 100), Random.Range(0, 100));
-        package.GetComponent<Rigidbody>().AddForce(15, 0, 0, ForceMode.Impulse);
+        package.GetComponent<Rigidbody>().AddForce(Random.Range(10, 25), 0, Random.Range(-5, 6), ForceMode.Impulse);
     }
 
     private IEnumerator ShootDelayCoroutine() { 

@@ -7,10 +7,14 @@ public class Worker : MonoBehaviour
     [SerializeField] private Transform _camera;
     [SerializeField] private Animator _anim;
     private float _turnSmoothVelocity;
-    private bool _hasBox;
     private GameObject _boxHeld;
+    private bool _hasBox;
 
-    private void Update() => Move();   
+    private void Update() {
+
+    }
+
+    private void FixedUpdate() => Move();   
 
     private void Move() {
         float horizontal = Input.GetAxisRaw("Horizontal");
@@ -27,8 +31,9 @@ public class Worker : MonoBehaviour
             transform.rotation = Quaternion.Euler(0f, angle, 0f);
 
             direction.Normalize();
-            direction *= 10f * Time.deltaTime;
-            transform.Translate(direction, Space.World);
+            // direction *= 10f * Time.deltaTime;
+            // transform.Translate(direction, Space.World);
+            GetComponent<Rigidbody>().MovePosition(transform.position + direction * Time.deltaTime * 10f);
         } 
         else {
             if(_hasBox) 
@@ -48,7 +53,7 @@ public class Worker : MonoBehaviour
         _boxHeld.transform.position = transform.GetChild(0).position;
         _boxHeld.GetComponent<MeshCollider>().enabled = false;
         _boxHeld.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
-        _boxHeld.GetComponent<Rigidbody>().isKinematic = false;
+        _boxHeld.GetComponent<Rigidbody>().isKinematic = true;
         _boxHeld.GetComponent<Collider>().enabled = false;
         _boxHeld.transform.SetParent(transform);
         _boxHeld.transform.position = transform.GetChild(0).position;
@@ -56,10 +61,11 @@ public class Worker : MonoBehaviour
 
     private void DropBox() {
         if(!_hasBox) return;
-        _boxHeld.GetComponent<Rigidbody>().useGravity = true;
-        _boxHeld.GetComponent<Rigidbody>().freezeRotation = true;
-         _boxHeld.GetComponent<MeshCollider>().enabled = true;
         _boxHeld.transform.SetParent(null);
+        _boxHeld.GetComponent<Rigidbody>().useGravity = true;
+        _boxHeld.GetComponent<Rigidbody>().isKinematic = false;
+        _boxHeld.GetComponent<Rigidbody>().freezeRotation = false;
+        _boxHeld.GetComponent<MeshCollider>().enabled = true;
         _hasBox = false;
     }
 
@@ -68,7 +74,7 @@ public class Worker : MonoBehaviour
             PickUpBox(other.gameObject);
         if(other.CompareTag("DropOff")) 
             DropBox();
+        if(other.CompareTag("Wall"))
+            transform.Rotate(0, 180, 0);
     }
-
-
 }

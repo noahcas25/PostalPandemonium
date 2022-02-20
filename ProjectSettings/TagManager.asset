@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Box
   - DropOff
+  - Wall
+  - Ground
   layers:
   - Default
   - TransparentFX
