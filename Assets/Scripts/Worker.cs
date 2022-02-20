@@ -8,10 +8,14 @@ public class Worker : MonoBehaviour
     [SerializeField] private Animator _anim;
     private float _turnSmoothVelocity;
     private GameObject _boxHeld;
+    private Vector3 startPosition;
     private bool _hasBox;
 
-    private void Update() {
+    private void Awake() => startPosition = transform.position;
 
+    private void Update() { 
+        if(Input.GetKeyDown("j")) 
+            Respawn();
     }
 
     private void FixedUpdate() => Move();   
@@ -31,8 +35,6 @@ public class Worker : MonoBehaviour
             transform.rotation = Quaternion.Euler(0f, angle, 0f);
 
             direction.Normalize();
-            // direction *= 10f * Time.deltaTime;
-            // transform.Translate(direction, Space.World);
             GetComponent<Rigidbody>().MovePosition(transform.position + direction * Time.deltaTime * 10f);
         } 
         else {
@@ -66,7 +68,12 @@ public class Worker : MonoBehaviour
         _boxHeld.GetComponent<Rigidbody>().isKinematic = false;
         _boxHeld.GetComponent<Rigidbody>().freezeRotation = false;
         _boxHeld.GetComponent<MeshCollider>().enabled = true;
+        _boxHeld.GetComponent<Rigidbody>().AddForce(0, 5, 50);
         _hasBox = false;
+    }
+
+    private void Respawn() {
+        transform.position = startPosition;
     }
 
     private void OnTriggerEnter(Collider other) {
