@@ -14,7 +14,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private AudioClip _alarm;
 
     private float _deltaTime = 0f;
-    private float _timer = 1.5f;
+    private float _timer = 2f;
     private bool _shouldCheck = true;
     private AudioSource _audioSource;
 
@@ -48,12 +48,15 @@ public class UIManager : MonoBehaviour
 
     public void ChangeScoreText(int score) {
         _text.text = score + "";
+        
+        if(score==15)
+            _timer = 1.5f;
     }
 
     public void ChangeFillAmount(float amount) {
         _healthBar.fillAmount = amount;
 
-        if(amount > 0.6)
+        if(amount > 0.7)
             _audioSource.PlayOneShot(_alarm);
     }
 
@@ -66,10 +69,14 @@ public class UIManager : MonoBehaviour
     }
     public void ClearDeltaTime() => _deltaTime = 0f;
 
-    public void Restart() => SceneManager.LoadScene("GameScene");
+    public void Restart() { 
+        Time.timeScale = 1f;
+        _gameManagerScriptableObject.ResetData();
+        SceneManager.LoadScene("GameScene");
+    }
 
     public void Quit() => Application.Quit();
-    
+
     private IEnumerator TimerCoroutine() {
         _shouldCheck = false;
         _gameManagerScriptableObject.ChangeFillAmount(0.045f);

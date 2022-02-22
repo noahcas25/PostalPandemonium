@@ -23,14 +23,14 @@ public class MailShoot : MonoBehaviour
         package.transform.Rotate(Random.Range(0, 100), Random.Range(0, 100), Random.Range(0, 100));
 
         if(_leftSide)
-            package.GetComponent<Rigidbody>().AddForce(Random.Range(5, 25), 0, Random.Range(-8, 9), ForceMode.Impulse);
-        else package.GetComponent<Rigidbody>().AddForce(Random.Range(-5, -25), 0, Random.Range(-8, 9), ForceMode.Impulse);
+            package.GetComponent<Rigidbody>().AddForce(Random.Range(3, 21), 0, Random.Range(-5, 6), ForceMode.Impulse);
+        else package.GetComponent<Rigidbody>().AddForce(Random.Range(-3, -21), 0, Random.Range(-5, 6), ForceMode.Impulse);
     }
 
     private IEnumerator ShootDelayCoroutine() { 
         _canShoot = false;
         yield return new WaitForSeconds(_speed);
         _canShoot = true;
-        _speed = Random.Range(1f, 5f);
+        _speed = Random.Range(1f, 4f);
     }
 }

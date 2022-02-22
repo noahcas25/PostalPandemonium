@@ -13,6 +13,10 @@ public class GameManagerScriptableObject : ScriptableObject
     [System.NonSerialized] public UnityEvent<float> _fillChangeEvent;
     [System.NonSerialized] public UnityEvent<bool> _gameOverEvent;
 
+    // public void ClearInstance() {
+
+    // }
+
     private void OnEnable() {
         _score = 0;
         _fillAmount = 0f;
@@ -43,6 +47,11 @@ public class GameManagerScriptableObject : ScriptableObject
             _fillAmount = 0f;
 
         _fillChangeEvent.Invoke(_fillAmount);
+    }
+
+    public void ResetData() {
+        _score = 0;
+        _fillAmount = 0f;
     }
 
     public void GameOver() {
